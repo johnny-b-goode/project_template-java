@@ -89,7 +89,7 @@ body
 	background-repeat: no-repeat;
 }
 
-#log
+#nested
 {
 	display: block;
 	position: absolute;
@@ -106,67 +106,4 @@ body
 	background-attachment: fixed;
 	background-position: center;
 	background-repeat: no-repeat;
-}
-
-#nets
-{
-	display: block;
-	position: absolute;
-	top: 15%;
-	right: 10%;
-	height: 15%;
-	width: 80%;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	z-index: 0;
-
-	background-color: #0000FF;
-	background-attachment: fixed;
-	background-position: center;
-	background-repeat: no-repeat;
-}
-
-#players
-{
-	display: block;
-	position: absolute;
-	top: 35%;
-	right: 10%;
-	height: 15%;
-	width: 80%;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	z-index: 0;
-
-	background-color: #FF0000;
-	background-attachment: fixed;
-	background-position: center;
-	background-repeat: no-repeat;
-}
-
-#user
-{
-	display: block;
-	position: absolute;
-	top: 2%;
-	right: 10%;
-	height: 10%;
-	width: 80%;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	z-index: 0;
-
-	background-color: #FF0000;
-	background-attachment: fixed;
-	background-position: center;
-	background-repeat: no-repeat;
-}
-
-button
-{
-	width: 32px;
-	height: 32px;
 }
