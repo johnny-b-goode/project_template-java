@@ -1,0 +1,172 @@
+body
+{
+	background-color: #FFFFFF;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+
+	/*--Begin Text Formatting*/
+	color: #000000;
+	font-size: 12pt;
+	font-style: normal;
+	font-family: helvetica, arial, sans-serif;
+	/*--End Text Formatting*/
+}
+
+#header
+{
+	display: block;
+	position: absolute;
+	top: 0%;
+	right: 20%;
+	height: 12%;
+	width: 80%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	z-index: -1;
+
+	background-color: #FF0000;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#main
+{
+	display: block;
+	position: absolute;
+	top: 12%;
+	right: 20%;
+	height: 82%;
+	width: 80%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	z-index: -1;
+
+	background-color: #AAAAAA;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#sidebar
+{
+	display: block;
+	position: absolute;
+	top: 0%;
+	right: 0%;
+	height: 100%;
+	width: 20%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	z-index: -1;
+
+	background-color: #00FF00;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#footer
+{
+	display: block;
+	position: absolute;
+	top: 94%;
+	right: 20%;
+	height: 6%;
+	width: 80%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	z-index: -1;
+
+	background-color: #0000FF;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#log
+{
+	display: block;
+	position: absolute;
+	top: 55%;
+	right: 10%;
+	height: 15%;
+	width: 80%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	z-index: 0;
+
+	background-color: #0000FF;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#nets
+{
+	display: block;
+	position: absolute;
+	top: 15%;
+	right: 10%;
+	height: 15%;
+	width: 80%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	z-index: 0;
+
+	background-color: #0000FF;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#players
+{
+	display: block;
+	position: absolute;
+	top: 35%;
+	right: 10%;
+	height: 15%;
+	width: 80%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	z-index: 0;
+
+	background-color: #FF0000;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+#user
+{
+	display: block;
+	position: absolute;
+	top: 2%;
+	right: 10%;
+	height: 10%;
+	width: 80%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	z-index: 0;
+
+	background-color: #FF0000;
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+button
+{
+	width: 32px;
+	height: 32px;
+}
