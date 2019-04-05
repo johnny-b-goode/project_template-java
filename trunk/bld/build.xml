@@ -260,7 +260,7 @@
 			<fileset dir="${src}" />
 			<doctitle><![CDATA[<h1>${ant.project.name} Javadoc</h1>]]></doctitle>
 			<bottom><![CDATA[<i>Copyright &#169; INSERT COPYRIGHT HOLDER HERE All Rights Reserved.</i>]]></bottom>
-			<link offline="true" href="https://docs.oracle.com/javase/8/docs/api/" packagelistLoc="C:\tmp" />
+			<link offline="true" href="https://docs.oracle.com/en/java/javase/11/docs/api/" packagelistLoc="C:\tmp" />
 		</javadoc>
 	</target>
 
