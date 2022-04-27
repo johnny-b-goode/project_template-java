@@ -1,12 +1,11 @@
 package net.scientifichooliganism.projecttemplate;
 
-import org.junit.*;
-import static org.junit.Assert.*;
-import org.junit.runner.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ExampleTest {
 	@Test
 	public void test01 () {
-		Assert.assertTrue(true);
+		assertTrue(true);
 	}
 }

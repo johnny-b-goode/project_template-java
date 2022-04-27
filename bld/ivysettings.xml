@@ -13,9 +13,9 @@
 		<chain name="ofFools">
 			<!--Add details for artifact repository if desired, otherwise remove these entries. Also note, if using a local
 			repository to proxy external repositories, the entry for Maven Central can be removed.-->
-			<ibiblio name="INSERT_ARTIFACT_REPOSITORY-release" m2compatible="true" root="INSERT_ARTIFACT_REPOSITORY_URL" />
+			<!--ibiblio name="INSERT_ARTIFACT_REPOSITORY-release" m2compatible="true" root="INSERT_ARTIFACT_REPOSITORY_URL" /-->
 			<ibiblio name="maven" m2compatible="true" root="https://repo1.maven.org/maven2/" />
-			<ibiblio name="INSERT_ARTIFACT_REPOSITORY-snapshot" m2compatible="true" root="INSERT_ARTIFACT_REPOSITORY_URL" />
+			<!--ibiblio name="INSERT_ARTIFACT_REPOSITORY-snapshot" m2compatible="true" root="INSERT_ARTIFACT_REPOSITORY_URL" /-->
 		</chain>
 	</resolvers>
 </ivysettings>
