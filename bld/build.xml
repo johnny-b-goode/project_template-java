@@ -19,12 +19,13 @@
 	<property name="info.txt" value="${basedir}/info.txt" />
 	<property name="jarbasename" value="INSERT JAR NAME HERE" />
 	<property name="jarextension" value=".jar" />
+	<property name="suffix" value="-SNAPSHOT" />
 	<property name="warbasename" value="INSERT WAR NAME HERE" />
 	<property name="warextension" value=".war" />
 	<property name="zipbasename" value="INSERT ZIP NAME HERE" />
 	<property name="zipextension" value=".zip" />
 	<!--ivy properties-->
-	<property name="ivy.version" value="2.4.0" />
+	<property name="ivy.version" value="2.5.0" />
 	<property name="ivy.lib" value="${lib}/ivy" />
 	<!--sonar properties-->
 	<property name="sonar-project.properties" value="${basedir}/sonar-project.properties" />
@@ -117,7 +118,7 @@
 	</target>
 
 	<target name="ivy.download" depends="ivy.prep" description="">
-		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" dest="${ivy.lib}" usetimestamp="true" verbose="true" maxtime="60" retries="1" />
+		<get src="https://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" dest="${ivy.lib}" usetimestamp="true" verbose="true" maxtime="60" retries="1" />
 	</target>
 
 	<target name="ivy.define">
@@ -131,6 +132,50 @@
 		<ivy:retrieve pattern="${lib}/[conf]/[artifact]-[revision].[ext]" sync="true" />
 	</target>
 
+	<!--Normally I like to keep my targets as atomic as possible, but in this case running ivy.makepom before-->
+	<!--ivy:resolve (even in a separate target) causes an IllegalArgumentException: unknown resolver.-->
+	<!--I think this could be resolved by adding the "keep" attribute to the ivy:resolve task in the-->
+	<!--target calling ivy:makepom, but at this point there is no glaring reason for ivy:makepom to be in a-->
+	<!--separate target (aside from maintaining modularity).-->
+	<target name="ivy.publish" if="is_ver_set" depends="ivy.define" description="">
+		<property name="ivy.pom.version" value="${app_vrsn}${suffix}" />
+		<property name="ivy.pom.description" value="${sonar.projectDescription}" />
+		<!--property name="ivy.pom.url" value="" /-->
+		<ivy:settings id="settings" file="${bld}/ivysettings.xml" />
+		<ivy:resolve file="${bld}/ivy.xml" settingsRef="settings" conf="*" />
+		<rename src="${jar}/${ivy.module}-${app_vrsn}${jarextension}" dest="${jar}/${ivy.module}-${app_vrsn}${suffix}${jarextension}" />
+		<ivy:makepom ivyfile="${bld}/ivy.xml" pomfile="${bld}/${jarbasename}-${app_vrsn}${suffix}.pom">
+			<mapping conf="compile" scope="compile" />
+			<mapping conf="test" scope="test" />
+		</ivy:makepom>
+		<ivy:publish resolver="INSERT_ARTIFACT_REPOSITORY-snapshot" revision="${app_vrsn}${suffix}" publishivy="false">
+			<artifacts pattern="${jar}/[artifact]-[revision].[ext]" />
+			<artifacts pattern="${bld}/[artifact]-[revision].[ext]" />
+			<artifact name="${ivy.module}" ext="pom" type="pom" />
+		</ivy:publish>
+	</target>
+
+	<!--The use of get, move, copy, and replace Ant tasks here is decidedly non-optimal. The intention is to ensure that the artifacts
+	pushed to -release are what are actually published. This is based on an assumption of pushing .jar files to a Maven style repository.
+	This also assumes the udisciplined use of an artifact management tool, within the larger CI / CD toolchain. This is also somewhat
+	dependent on the specific tool(s) used. Note that depending on the tool used, this may be handled differently.
+
+	If the release process should be handled differently, simply replace the actions in the following target (ivy.release).-->
+	<target name="ivy.release" if="is_ver_set" depends="clean_jar,clean_bld,ivy.define" description="">
+		<ivy:settings id="settings" file="${bld}/ivysettings.xml" />
+		<ivy:resolve file="${bld}/ivy.xml" settingsRef="settings" conf="*" transitive="false" />
+		<!--I could use ivy:retrieve here, but it would grab all of the resolved artifacts, not the single one we want.-->
+		<get src="INSERT_ARTIFACT_REPOSITORY_URL_HERE${jarbasename}/${app_vrsn}${suffix}/${jarbasename}-${app_vrsn}${suffix}${jarextension}" dest="${jar}" username="${artifact.username}" password="${artifact.password}" usetimestamp="true" verbose="true" maxtime="60" retries="1" />
+		<move file="${jar}/${jarbasename}-${app_vrsn}${suffix}${jarextension}" tofile="${jar}/${jarbasename}-${app_vrsn}${jarextension}" overwrite="true" force="true"/>
+		<copy file="${bld}/child_pom.template" tofile="${bld}/${jarbasename}-${app_vrsn}.pom" />
+		<replace file="${bld}/${jarbasename}-${app_vrsn}.pom" token="$VERSION" value="${app_vrsn}${suffix}" />
+		<ivy:publish resolver="INSERT_ARTIFACT_REPOSITORY-release" revision="${app_vrsn}${suffix}" pubrevision="${app_vrsn}" publishivy="false">
+			<artifacts pattern="${jar}/[artifact]-[revision].[ext]" />
+			<artifacts pattern="${bld}/[artifact]-[revision].[ext]" />
+			<artifact name="${ivy.module}" ext="pom" type="pom" />
+		</ivy:publish>
+	</target>
+	
 	<target name="ivy.clean_cache" depends="ivy.define" description="">
 		<ivy:cleancache />
 	</target>
@@ -142,6 +187,12 @@
 	<target name="clean_bin">
 		<delete includeemptydirs="true" verbose="true" >
 			<fileset dir="${bin}" includes="**/*" />
+		</delete>
+	</target>
+
+	<target name="clean_bld">
+		<delete includeemptydirs="true" verbose="true" >
+			<fileset dir="${bld}" includes="**/*.pom" />
 		</delete>
 	</target>
 
@@ -187,7 +238,7 @@
 		</delete>
 	</target>
 
-	<target name="clean" depends="clean_log,clean_ivy,clean_sonar,clean_bin,clean_jar,clean_war,clean_tests,clean_rslt,clean_doc,clean_zip" description=""/>
+	<target name="clean" depends="clean_log,clean_ivy,clean_sonar,clean_bin,clean_bld,clean_jar,clean_war,clean_tests,clean_rslt,clean_doc,clean_zip" description=""/>
 
 	<target name="compile" depends="clean_bin,log" description="">
 		<javac srcdir="${src}" includeantruntime="false" destdir="${bin}" includes="**/*.java">
@@ -210,20 +261,20 @@
 		</javac>
 	</target>
 
-	<target name="run_tests" description="">
-		<junit printsummary="withOutAndErr" haltonerror="true" haltonfailure="true" showoutput="true" logfailedtests="true">
+	<target name="run_tests" depends="compile_tests" description="">
+		<junitlauncher printSummary="true" haltOnFailure="true">
 			<classpath>
 				<path refid="classpath" />
 				<pathelement path="${bin}" />
 				<pathelement path="${tst}" />
 			</classpath>
-			<formatter type="xml" />
-			<batchtest todir="${rslt}">
+			<listener type="legacy-xml" sendSysOut="true" sendSysErr="true" outputDir="${rslt}" />
+			<testclasses>
 				<fileset dir="${tst}">
 					<include name="${tests}" />
 				</fileset>
-			</batchtest>
-		</junit>
+			</testclasses>
+		</junitlauncher>
 	</target>
 
 	<target name="releasejar" if="is_ver_set" depends="clean_jar">

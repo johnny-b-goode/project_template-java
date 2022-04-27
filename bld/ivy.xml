@@ -8,6 +8,9 @@
 	</configurations>
 
 	<dependencies defaultconf="compile">
-		<dependency org="junit" name="junit" rev="4.12" conf="test->default" />
+		<dependency org="org.junit.platform" name="junit-platform-launcher" rev="1.4.2" conf="test->default" />
+		<dependency org="org.junit.jupiter" name="junit-jupiter" rev="5.4.2" conf="test->default" />
+		<dependency org="org.mockito" name="mockito-core" rev="2.28.2" conf="test->default" />
+		<dependency org="org.mockito" name="mockito-junit-jupiter" rev="2.28.2" conf="test->default" />
 	</dependencies>
 </ivy-module>

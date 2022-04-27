@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivysettings>
-    <settings defaultResolver="ofFools"/>
-    <resolvers>
-        <chain name="ofFools">
-            <ibiblio name="maven" m2compatible="true" root="http://central.maven.org/maven2/" />
-        </chain>
-    </resolvers>
+	<!--If needed, artifact.username and artifact.password need to be passed to the build as arguments-->
+    <credentials host="INSERT_HOST_HERE" realm="INSERT_REALM_HERE Repository Manager" username="${artifact.username}" passwd="${artifact.password}" />
+	<settings defaultResolver="ofFools"/>
+
+	<publications>
+		<artifact name="INSERT_NAME_HERE" type="jar" ext="jar" />
+		<artifact name="INSERT_NAME_HERE" type="pom" ext="pom" />
+	</publications>
+
+	<resolvers>
+		<chain name="ofFools">
+			<!--Add details for artifact repository if desired, otherwise remove these entries. Also note, if using a local
+			repository to proxy external repositories, the entry for Maven Central can be removed.-->
+			<ibiblio name="INSERT_ARTIFACT_REPOSITORY-release" m2compatible="true" root="INSERT_ARTIFACT_REPOSITORY_URL" />
+			<ibiblio name="maven" m2compatible="true" root="https://repo1.maven.org/maven2/" />
+			<ibiblio name="INSERT_ARTIFACT_REPOSITORY-snapshot" m2compatible="true" root="INSERT_ARTIFACT_REPOSITORY_URL" />
+		</chain>
+	</resolvers>
 </ivysettings>
