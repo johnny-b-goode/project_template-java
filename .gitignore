@@ -1,0 +1,9 @@
+/bin
+/doc
+/jar
+/junit_results
+/lib
+/war
+/info.txt
+*.jar
+*.pom
